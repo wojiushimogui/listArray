@@ -126,11 +126,11 @@ public class ArrayList<E> extends AbstractList<E>
             //当elementData是默认的空数组时，就赋值为默认大小
             : DEFAULT_CAPACITY;
 
-        if (minCapacity > minExpand) {
-            ensureExplicitCapacity(minCapacity);
+        if (minCapacity > minExpand) {//如果最小指定的容量大小大于minExpand
+            ensureExplicitCapacity(minCapacity);//调用这个函数
         }
     }
-
+    //这个还没有看
     private void ensureCapacityInternal(int minCapacity) {
         if (elementData == DEFAULTCAPACITY_EMPTY_ELEMENTDATA) {
             minCapacity = Math.max(DEFAULT_CAPACITY, minCapacity);
@@ -158,23 +158,25 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * Increases the capacity to ensure that it can hold at least the
      * number of elements specified by the minimum capacity argument.
-     *
+     *增加容量以保证它能够至少装下指定最小容量参数的大小
      * @param minCapacity the desired minimum capacity
+     *新列表的容量将扩大为原来容量的3倍
      */
     private void grow(int minCapacity) {
         // overflow-conscious code
         int oldCapacity = elementData.length;
+        //新列表的容量将扩大为原来容量的3倍
         int newCapacity = oldCapacity + (oldCapacity >> 1);
-        if (newCapacity - minCapacity < 0)
+        if (newCapacity - minCapacity < 0)//如果扩大到3倍，还不够，则则直接将minCapacity设置为当前容量 
             newCapacity = minCapacity;
-        if (newCapacity - MAX_ARRAY_SIZE > 0)
-            newCapacity = hugeCapacity(minCapacity);
+        if (newCapacity - MAX_ARRAY_SIZE > 0)//如果newCapacity（等于原来大小的3倍或者是minCapacity的大小）的大小比MAX_ARRAY_SIZE大。找到离MAX_ARRAY_SIZE最近的
+            newCapacity = hugeCapacity(minCapacity);//则直接考查minCapacity是否大于MAX_ARRAY_SIZE的大小，若大于，则直接newCapacity的大小为Integer.MAX_VALUE.
         // minCapacity is usually close to size, so this is a win:
         elementData = Arrays.copyOf(elementData, newCapacity);
     }
 
     private static int hugeCapacity(int minCapacity) {
-        if (minCapacity < 0) // overflow
+        if (minCapacity < 0) // overflow//可以不判断，但是这样写更好，更加严谨
             throw new OutOfMemoryError();
         return (minCapacity > MAX_ARRAY_SIZE) ?
             Integer.MAX_VALUE :
@@ -186,7 +188,7 @@ public class ArrayList<E> extends AbstractList<E>
      *
      * @return the number of elements in this list
      */
-    public int size() {
+    public int size() {//返回这个列表元素的个数
         return size;
     }
 
@@ -195,7 +197,7 @@ public class ArrayList<E> extends AbstractList<E>
      *
      * @return <tt>true</tt> if this list contains no elements
      */
-    public boolean isEmpty() {
+    public boolean isEmpty() {//判断这个列表是否为空
         return size == 0;
     }
 
