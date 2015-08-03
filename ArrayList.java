@@ -17,6 +17,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Shared empty array instance used for empty instances.
+     *由于ArrayList是基于数组来实现的。
      */
     private static final Object[] EMPTY_ELEMENTDATA = {};
 
@@ -46,17 +47,17 @@ public class ArrayList<E> extends AbstractList<E>
     /**
      * Constructs an empty list with the specified initial capacity.
      *
-     * @param  initialCapacity  the initial capacity of the list
+     * @param  initialCapacity  the initial capacity of the list  //列表的大小
      * @throws IllegalArgumentException if the specified initial capacity
      *         is negative
-     *构造函数
+     *有一个参数的构造函数
      */
     public ArrayList(int initialCapacity) {
         if (initialCapacity > 0) {
             this.elementData = new Object[initialCapacity];//实例化数组对象
         } else if (initialCapacity == 0) {
             this.elementData = EMPTY_ELEMENTDATA;//如果传入的大小为零，则用默认大小代替
-        } else {
+        } else {//否则抛异常
             throw new IllegalArgumentException("Illegal Capacity: "+
                                                initialCapacity);
         }
@@ -64,7 +65,7 @@ public class ArrayList<E> extends AbstractList<E>
 
     /**
      * Constructs an empty list with an initial capacity of ten.
-     *无参构造函数，大小为默认大小
+     *无参构造函数，数组用共享空数组来初始化
      */
     public ArrayList() {
         this.elementData = DEFAULTCAPACITY_EMPTY_ELEMENTDATA;
@@ -74,8 +75,8 @@ public class ArrayList<E> extends AbstractList<E>
      * Constructs a list containing the elements of the specified
      * collection, in the order they are returned by the collection's
      * iterator.
-     *
-     * @param c the collection whose elements are to be placed into this list
+     *构造一个里列表来包含指定的容器的元素，
+     * @param c the collection whose elements are to be placed into this list//集合中的元素放到这个列表中
      * @throws NullPointerException if the specified collection is null
      *构造函数中传入参数的为容器
      */
@@ -83,7 +84,7 @@ public class ArrayList<E> extends AbstractList<E>
         elementData = c.toArray();
         if ((size = elementData.length) != 0) {
             // c.toArray might (incorrectly) not return Object[] (see 6260652)
-            if (elementData.getClass() != Object[].class)
+            if (elementData.getClass() != Object[].class)//检查c.toArray()是不是返回的Object[]类型，如果不是，则将elementData数组转化为Object[]数组
                 elementData = Arrays.copyOf(elementData, size, Object[].class);
         } else {
             // replace with empty array.
@@ -92,21 +93,24 @@ public class ArrayList<E> extends AbstractList<E>
     }
 
     /**
+     *整理这个列表的容量为实际实例的大小，能够运用这个操作去减少列表的存储空间
      * Trims the capacity of this <tt>ArrayList</tt> instance to be the
      * list's current size.  An application can use this operation to minimize
      * the storage of an <tt>ArrayList</tt> instance.
      */
+    //// 将当前容量值设为实际元素个数 
     public void trimToSize() {
         modCount++;
-        if (size < elementData.length) {
-            elementData = (size == 0)
+        if (size < elementData.length) {//当实际元素的个数小于数组的长度时
+            elementData = (size == 0)//如果size的大小为零，则用空数组EMPTY_ELEMENTDATA将其初始化，如果size的大小不为零，则将当前容量值设为实际元素个数。
               ? EMPTY_ELEMENTDATA
               : Arrays.copyOf(elementData, size);
         }
     }
 
     /**
-     * Increases the capacity of this <tt>ArrayList</tt> instance, if
+     * 增加这个列表的容量，如果需要，要确保这个列表能够至少装下最小参数所指定的大小的元素的个数
+     *Increases the capacity of this <tt>ArrayList</tt> instance, if
      * necessary, to ensure that it can hold at least the number of elements
      * specified by the minimum capacity argument.
      *
@@ -115,9 +119,11 @@ public class ArrayList<E> extends AbstractList<E>
     public void ensureCapacity(int minCapacity) {
         int minExpand = (elementData != DEFAULTCAPACITY_EMPTY_ELEMENTDATA)
             // any size if not default element table
+            //当elementData不是默认的空数组时
             ? 0
             // larger than default for default empty table. It's already
             // supposed to be at default size.
+            //当elementData是默认的空数组时，就赋值为默认大小
             : DEFAULT_CAPACITY;
 
         if (minCapacity > minExpand) {
